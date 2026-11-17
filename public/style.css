@@ -1,0 +1,823 @@
+/* ===== 기본 ===== */
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: "Pretendard", "Noto Sans KR", sans-serif;
+  font-size: 18px;            /* 현장에서 읽기 쉽게 글씨를 크게 */
+  background: #f4f5f7;
+  color: #222;
+}
+
+/* ===== 상단 ===== */
+header {
+  background: #1f3a5f;
+  color: white;
+  padding: 12px 16px;
+}
+
+header h1 {
+  margin: 0 0 10px;
+  font-size: 22px;
+}
+
+nav {
+  display: flex;
+  gap: 8px;
+}
+
+.tab {
+  flex: 1;                    /* 탭 3개가 같은 너비 */
+  text-align: center;
+  padding: 10px 4px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.15);
+  color: white;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.tab.active {                 /* 지금 보고 있는 탭 */
+  background: white;
+  color: #1f3a5f;
+  font-weight: bold;
+}
+
+/* ===== 화면 ===== */
+main {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.screen {
+  display: none;              /* 기본은 숨김 */
+  background: white;
+  border-radius: 12px;
+  padding: 16px;
+}
+
+.screen.active {              /* 선택된 화면만 보임 */
+  display: block;
+}
+
+.hint {
+  color: #888;
+}
+
+/* ===== 지시 작성 화면 ===== */
+.label {
+  display: block;
+  margin: 16px 0 6px;
+  font-weight: bold;
+}
+
+select,
+textarea {
+  width: 100%;
+  padding: 10px;
+  font-size: 18px;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.choice-row {
+  display: flex;
+  gap: 8px;
+}
+
+.choice {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.choice-safety {
+  color: #b42318;
+}
+
+.recipient-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 두 줄씩 */
+  gap: 6px;
+}
+
+.recipient {
+  padding: 8px;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.lang-tag {
+  color: #888;
+  font-size: 13px;
+}
+
+.small-btn {
+  margin-left: 8px;
+  padding: 4px 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background: white;
+  cursor: pointer;
+}
+
+.main-btn {
+  width: 100%;
+  margin-top: 20px;
+  padding: 14px;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  background: #1f3a5f;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.error {
+  color: #b42318;
+  font-weight: bold;
+}
+
+/* ===== 변환 결과 ===== */
+mark {
+  background: #ffe066;   /* 바뀐 단어 노란색 */
+  padding: 0 2px;
+  border-radius: 3px;
+}
+
+.chip {
+  display: inline-block;
+  margin: 0 6px 6px 0;
+  padding: 6px 10px;
+  background: #f4f5f7;
+  border-radius: 20px;
+}
+
+.compare {
+  display: grid;
+  grid-template-columns: 1fr 1fr;   /* 원문과 쉬운 한국어 나란히 */
+  gap: 8px;
+}
+
+.compare-box {
+  padding: 12px;
+  background: #f9fafb;
+  border: 1px solid #e3e3e3;
+  border-radius: 8px;
+}
+
+.compare-box p {
+  margin: 6px 0 0;
+  line-height: 1.6;
+}
+
+.compare-title {
+  font-size: 14px;
+  color: #666;
+}
+
+.template-info {
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.score {
+  color: #666;
+}
+
+.warn {
+  color: #b54708;
+}
+
+.preview-card {
+  margin-bottom: 10px;
+  padding: 12px;
+  border: 1px solid #d0d5dd;
+  border-radius: 10px;
+}
+
+.preview-card.safety {                /* 안전 지시 카드 */
+  border: 3px solid #d92d20;
+  background: #fff5f5;
+}
+
+.safety-label {
+  margin-bottom: 8px;
+  padding: 6px 10px;
+  color: white;
+  background: #d92d20;
+  border-radius: 6px;
+  font-weight: bold;
+}
+
+.preview-head {
+  font-weight: bold;
+}
+
+.preview-names {
+  display: block;
+  font-weight: normal;
+  font-size: 14px;
+  color: #666;
+}
+
+.preview-text {
+  margin: 8px 0 4px;
+  font-size: 20px;
+  line-height: 1.5;
+}
+
+.preview-ko {
+  margin: 0;
+  font-size: 15px;
+  color: #666;
+}
+
+/* ===== 휴대폰 화면 (좁을 때 한 줄씩) ===== */
+@media (max-width: 600px) {
+  .compare,
+  .recipient-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== 보내기 + 보낸 지시 ===== */
+.send-btn {
+  background: #157f3b;   /* 보내기는 초록색 */
+}
+
+.success {
+  color: #157f3b;
+  font-weight: bold;
+}
+
+.sent-section {
+  margin-top: 24px;
+  padding-top: 8px;
+  border-top: 1px solid #e3e3e3;
+}
+
+.sent-item {
+  margin-bottom: 8px;
+  padding: 10px 12px;
+  border: 1px solid #e3e3e3;
+  border-left: 5px solid #1f3a5f;
+  border-radius: 8px;
+}
+
+.sent-item.safety {
+  border-left-color: #d92d20;
+}
+
+.sent-meta {
+  font-size: 14px;
+  color: #666;
+}
+
+.sent-original {
+  font-size: 14px;
+  color: #999;
+}
+
+/* ===== 근로자 카드 화면 ===== */
+.worker-select {
+  font-size: 20px;
+  padding: 12px;
+}
+
+.card-summary {
+  font-weight: bold;
+  color: #1f3a5f;
+}
+
+.work-card {
+  margin-bottom: 16px;
+  padding: 16px;
+  border: 1px solid #d0d5dd;
+  border-radius: 14px;
+  background: white;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.work-card.safety {                 /* 안전 지시: 빨간 테두리 */
+  border: 4px solid #d92d20;
+  background: #fff5f5;
+}
+
+.work-card-warning {
+  margin-bottom: 12px;
+  padding: 10px 12px;
+  color: white;
+  background: #d92d20;
+  border-radius: 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.work-card-native {                 /* 모국어: 크게 */
+  margin: 0 0 12px;
+  font-size: 26px;
+  font-weight: bold;
+  line-height: 1.45;
+  word-break: keep-all;
+  overflow-wrap: anywhere;
+}
+
+.work-card-ko {                     /* 쉬운 한국어: 그 아래 작게 */
+  margin: 0;
+  padding-top: 10px;
+  border-top: 1px dashed #d0d5dd;
+  font-size: 18px;
+  color: #444;
+  line-height: 1.5;
+}
+
+.work-card-time {
+  margin-top: 6px;
+  font-size: 13px;
+  color: #999;
+}
+
+.answer-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.answer-btn {                       /* 큰 버튼: 장갑 낀 손가락으로도 누르기 쉽게 */
+  min-height: 72px;
+  padding: 10px 6px;
+  font-size: 20px;
+  font-weight: bold;
+  border-radius: 12px;
+  cursor: pointer;
+  background: white;
+}
+
+.answer-btn small {
+  display: block;
+  margin-top: 4px;
+  font-size: 14px;
+  font-weight: normal;
+}
+
+.answer-btn.understood {
+  color: #157f3b;
+  border: 2px solid #157f3b;
+}
+
+.answer-btn.confused {
+  color: #b54708;
+  border: 2px solid #b54708;
+}
+
+.answer-btn.understood.chosen {     /* 고른 버튼은 색을 채움 */
+  color: white;
+  background: #157f3b;
+}
+
+.answer-btn.confused.chosen {
+  color: white;
+  background: #b54708;
+}
+
+.answer-status {
+  margin: 10px 0 0;
+  font-size: 15px;
+  color: #555;
+}
+
+/* 휴대폰: 여백 줄이고 글씨 살짝 줄임 */
+@media (max-width: 600px) {
+  main {
+    padding: 8px;
+  }
+
+  .screen {
+    padding: 12px;
+  }
+
+  .work-card-native {
+    font-size: 23px;
+  }
+
+  .answer-btn {
+    font-size: 18px;
+  }
+}
+
+/* ===== 탭 4개: 휴대폰에서 한 줄에 들어가게 ===== */
+@media (max-width: 600px) {
+  nav {
+    gap: 4px;
+  }
+
+  .tab {
+    padding: 8px 2px;
+    font-size: 13px;
+  }
+}
+
+/* ===== 반장 확인판 ===== */
+.board-item {
+  margin-bottom: 10px;
+  border: 1px solid #e3e3e3;
+  border-left: 5px solid #1f3a5f;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.board-item.safety {
+  border-left-color: #d92d20;
+}
+
+.board-item.has-confused {          /* 모르겠음이 있는 지시는 눈에 띄게 */
+  border-color: #d92d20;
+  border-left-width: 5px;
+}
+
+.board-head {                       /* 지시 한 줄 전체가 버튼 */
+  display: block;
+  width: 100%;
+  padding: 12px;
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  background: white;
+  border: none;
+  cursor: pointer;
+}
+
+.board-head:hover {
+  background: #f9fafb;
+}
+
+.board-toggle {
+  float: right;
+  color: #1f3a5f;
+}
+
+.board-text {
+  margin: 4px 0 8px;
+  font-weight: bold;
+}
+
+.board-count span {
+  display: inline-block;
+  margin-right: 12px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.board-rate {
+  color: #1f3a5f;
+}
+
+.board-alert {
+  margin-top: 8px;
+  padding: 8px 10px;
+  color: white;
+  background: #d92d20;
+  border-radius: 6px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.status-understood { color: #157f3b; }
+.status-confused   { color: #d92d20; }
+.status-waiting    { color: #888; }
+
+.status-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 16px;
+}
+
+.status-table th,
+.status-table td {
+  padding: 10px 8px;
+  border-top: 1px solid #eee;
+  text-align: left;
+}
+
+.status-table th {
+  font-size: 14px;
+  color: #666;
+  background: #f4f5f7;
+}
+
+.status-table td:first-child {
+  font-weight: bold;
+  white-space: nowrap;
+}
+
+.status-table tr.row-confused {     /* 모르겠음: 빨간 줄 */
+  background: #fee4e2;
+}
+
+.status-table tr.row-confused td {
+  color: #b42318;
+  font-weight: bold;
+}
+
+/* ===== 용어 사전 화면 ===== */
+.dict-form {
+  padding: 12px;
+  background: #f9fafb;
+  border-radius: 10px;
+}
+
+.dict-inputs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.dict-inputs label {
+  font-weight: bold;
+  font-size: 15px;
+}
+
+.dict-form input,
+.dict-search {
+  display: block;
+  width: 100%;
+  margin-top: 4px;
+  padding: 10px;
+  font-size: 18px;
+  font-family: inherit;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.dict-form .main-btn {
+  margin-top: 12px;
+}
+
+#dict-cancel {
+  margin: 8px 0 0;
+}
+
+.dict-search {
+  margin: 16px 0 8px;
+}
+
+.dict-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 12px;
+}
+
+.dict-table th,
+.dict-table td {
+  padding: 8px;
+  border-bottom: 1px solid #eee;
+  text-align: left;
+}
+
+.dict-table th {
+  font-size: 14px;
+  color: #666;
+}
+
+.dict-table tr.editing {            /* 지금 수정 중인 줄 */
+  background: #fff8db;
+}
+
+.dict-buttons {
+  white-space: nowrap;
+  text-align: right;
+}
+
+.dict-buttons .small-btn {
+  margin-left: 4px;
+}
+
+.small-btn.danger {
+  color: #b42318;
+  border-color: #f3b4ae;
+}
+
+@media (max-width: 600px) {
+  .dict-inputs {
+    grid-template-columns: 1fr;
+  }
+
+  .status-table {
+    font-size: 14px;
+  }
+
+  .status-table th,
+  .status-table td {
+    padding: 8px 4px;
+  }
+}
+
+/* ===== AI 번역 ===== */
+.ai-box {
+  margin-bottom: 12px;
+}
+
+.ai-btn {
+  margin-top: 4px;
+  background: #5b3fd1;      /* AI 버튼은 보라색 */
+}
+
+.ai-loading {
+  padding: 12px;
+  background: #f3f0ff;
+  border-radius: 8px;
+  font-weight: bold;
+  color: #5b3fd1;
+}
+
+.ai-result {
+  padding: 12px;
+  background: #f3f0ff;
+  border: 1px solid #d9d0ff;
+  border-radius: 10px;
+}
+
+.ai-easy {
+  margin: 4px 0 8px;
+  font-size: 18px;
+  font-weight: bold;
+}
+
+.ai-badge {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 2px 8px;
+  font-size: 13px;
+  font-weight: normal;
+  color: #5b3fd1;
+  background: #f3f0ff;
+  border-radius: 10px;
+}
+
+.preview-back {             /* 반장 확인용: 번역을 다시 한국어로 */
+  margin: 4px 0;
+  padding: 6px 8px;
+  font-size: 15px;
+  background: #fffbe6;
+  border-radius: 6px;
+}
+
+.ai-confirm-row {
+  display: block;
+  margin-top: 12px;
+  padding: 12px;
+  font-weight: bold;
+  background: #fffbe6;
+  border: 2px solid #f5c400;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
+.ai-confirm-row input {
+  width: 20px;
+  height: 20px;
+  vertical-align: middle;
+}
+
+.main-btn:disabled {        /* 확인 전에는 보내기 버튼이 흐리게 */
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* ===== 상단: 앱 이름 + [초기화] ===== */
+.header-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.header-top h1 {
+  margin: 0;
+}
+
+.reset-btn {
+  flex-shrink: 0;
+  padding: 6px 12px;
+  font-size: 14px;
+  font-family: inherit;
+  color: white;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.reset-btn:hover {
+  background: rgba(255, 255, 255, 0.15);
+}
+
+/* ===== 로그인 화면과 머리글 ===== */
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.user-label {
+  font-size: 15px;
+  font-weight: bold;
+}
+
+.login-box {
+  margin-top: 16px;
+  padding: 16px;
+  background: #f9fafb;
+  border: 1px solid #e3e3e3;
+  border-radius: 12px;
+}
+
+.login-box h3 {
+  margin: 0 0 8px;
+}
+
+.login-input {
+  display: block;
+  width: 100%;
+  padding: 12px;
+  font-size: 20px;
+  font-family: inherit;
+  letter-spacing: 4px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+.login-box .main-btn {
+  margin-top: 12px;
+}
+
+.worker-login-list {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.worker-login-btn {             /* 근로자가 누르는 이름 버튼: 크게 */
+  min-height: 72px;
+  padding: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  font-family: inherit;
+  text-align: left;
+  background: white;
+  border: 2px solid #d0d5dd;
+  border-radius: 12px;
+  cursor: pointer;
+}
+
+.worker-login-btn:hover {
+  border-color: #1f3a5f;
+}
+
+.worker-login-flag {
+  font-size: 22px;
+}
+
+.worker-login-btn small {
+  display: block;
+  margin-top: 2px;
+  font-size: 13px;
+  font-weight: normal;
+  color: #666;
+}
+
+.card-greeting {
+  margin: 0 0 4px;
+}
+
+@media (max-width: 600px) {
+  .worker-login-list {
+    grid-template-columns: 1fr;
+  }
+
+  .header-top h1 {
+    font-size: 18px;
+  }
+}
+
+/* ===== 역할별로 보이는 것 나누기 (다른 규칙보다 뒤에 두어 항상 이기게) ===== */
+body.logged-out nav,
+body.logged-out .header-user,
+body.role-worker .admin-only {
+  display: none;
+}

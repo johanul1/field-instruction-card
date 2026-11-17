@@ -1,0 +1,8 @@
+# 키 파일 (DB 비밀번호가 들어 있음)
+.env
+.env.local
+
+# DB 백업 파일 (데이터가 그대로 들어 있음)
+# ※ db/schema.sql, db/seed.sql 은 비밀이 아닌 설계·예시 데이터라 Git에 올림
+backup/
+*.dump

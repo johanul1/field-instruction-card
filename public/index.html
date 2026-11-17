@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>현장 지시 카드</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- 상단: 앱 이름과 화면 전환 탭 -->
+  <header>
+    <div class="header-top">
+      <h1>현장 지시 카드</h1>
+      <!-- 로그인한 사람 + 버튼들 (로그인 전에는 숨김) -->
+      <div class="header-user">
+        <span id="user-label" class="user-label"></span>
+        <!-- 발표 시연을 처음 상태(예시 지시 3건)로 되돌림: 반장만 -->
+        <button type="button" id="reset-btn" class="reset-btn admin-only">↺ 초기화</button>
+        <button type="button" id="logout-btn" class="reset-btn">로그아웃</button>
+      </div>
+    </div>
+    <!-- 반장 화면 탭 (근로자는 자기 카드 화면만 보므로 탭이 없음) -->
+    <nav class="admin-only">
+      <a href="#write" class="tab">✏️ 지시 작성</a>
+      <a href="#board" class="tab">✅ 확인판</a>
+      <a href="#dict" class="tab">📖 용어 사전</a>
+    </nav>
+  </header>
+
+  <main>
+    <!-- 로그인 화면: 반장(관리자)과 근로자가 따로 들어감 -->
+    <section id="screen-login" class="screen">
+      <h2>로그인</h2>
+
+      <div class="login-box">
+        <h3>👷 반장 (관리자)</h3>
+        <label class="label" for="admin-pin">비밀번호</label>
+        <input type="password" id="admin-pin" class="login-input" inputmode="numeric" autocomplete="off" placeholder="숫자 4자리">
+        <button type="button" id="admin-login-btn" class="main-btn">반장으로 들어가기</button>
+        <p id="login-error" class="error"></p>
+      </div>
+
+      <div class="login-box">
+        <h3>🙋 근로자 · Công nhân · कामदार · Ishchi</h3>
+        <p class="hint">내 이름을 누르세요.</p>
+        <!-- app.js가 근로자 명단으로 큰 이름 버튼을 만듦 -->
+        <div id="worker-login-list" class="worker-login-list"></div>
+      </div>
+    </section>
+
+    <!-- 화면 1: 반장이 지시를 쓰는 곳 -->
+    <section id="screen-write" class="screen">
+      <h2>지시 작성</h2>
+
+      <!-- 시연할 때 편하도록: 미리 만든 지시 10건 중 하나를 불러오기 -->
+      <label class="label" for="demo-select">시연 지시 불러오기 (선택)</label>
+      <select id="demo-select">
+        <option value="">— 직접 입력 —</option>
+      </select>
+
+      <!-- 원문 입력 -->
+      <label class="label" for="input-text">작업 지시 (원문)</label>
+      <textarea id="input-text" rows="3" placeholder="예: 오늘 5시에 시마이하고 오사마리 해."></textarea>
+
+      <!-- 일반 / 안전 선택 -->
+      <div class="label">지시 종류</div>
+      <div class="choice-row">
+        <label class="choice"><input type="radio" name="kind" value="normal" checked> 일반 지시</label>
+        <label class="choice choice-safety"><input type="radio" name="kind" value="safety"> ⚠️ 안전 지시</label>
+      </div>
+
+      <!-- 받는 사람 (app.js가 근로자 명단으로 채움) -->
+      <div class="label">
+        받는 사람
+        <button type="button" id="toggle-all" class="small-btn">전체 선택 / 해제</button>
+      </div>
+      <div id="recipient-list" class="recipient-list"></div>
+
+      <button type="button" id="convert-btn" class="main-btn">변환하기</button>
+      <p id="write-error" class="error"></p>
+
+      <!-- 변환 결과 (변환하기를 누르기 전에는 숨김) -->
+      <div id="result" hidden>
+        <h3>바뀐 단어</h3>
+        <div id="changed-words"></div>
+
+        <h3>원문 ↔ 쉬운 한국어</h3>
+        <div class="compare">
+          <div class="compare-box">
+            <div class="compare-title">원문</div>
+            <p id="original-view"></p>
+          </div>
+          <div class="compare-box">
+            <div class="compare-title">쉬운 한국어</div>
+            <p id="easy-view"></p>
+          </div>
+        </div>
+
+        <h3>번역 미리보기</h3>
+        <p id="template-info" class="template-info"></p>
+        <!-- 템플릿이 없을 때: AI 번역 버튼 / 진행 상태 / AI 결과 안내 (app.js가 채움) -->
+        <div id="ai-box" class="ai-box" hidden></div>
+        <div id="preview-list"></div>
+
+        <!-- AI 번역일 때만 보임: 반장이 확인해야 보내기 버튼이 켜짐 -->
+        <label id="ai-confirm-row" class="ai-confirm-row" hidden>
+          <input type="checkbox" id="ai-confirm">
+          AI 번역을 확인했어요. "한국어로 되옮기면"이 원래 지시와 뜻이 같아요.
+        </label>
+
+        <!-- 번역(템플릿 또는 확인한 AI 번역)이 있을 때만 보임 -->
+        <button type="button" id="send-btn" class="main-btn send-btn" hidden>📨 보내기</button>
+      </div>
+
+      <p id="send-message" class="success"></p>
+
+      <!-- 지금까지 보낸 지시 (localStorage에서 불러옴) -->
+      <div class="sent-section">
+        <h3>보낸 지시 (<span id="sent-count">0</span>건)
+          <button type="button" id="clear-btn" class="small-btn">모두 지우기</button>
+        </h3>
+        <div id="sent-list"></div>
+      </div>
+    </section>
+
+    <!-- 화면 2: 근로자가 자기 카드를 보는 곳 -->
+    <section id="screen-card" class="screen">
+      <!-- 로그인한 근로자 이름 (app.js가 채움) -->
+      <h2 id="card-greeting" class="card-greeting"></h2>
+
+      <!-- 어느 근로자의 카드를 보여줄지 (로그인한 근로자로 자동 선택, 화면에는 숨김) -->
+      <select id="worker-select" class="worker-select" hidden></select>
+
+      <p id="card-summary" class="card-summary"></p>
+
+      <!-- 고른 근로자의 지시 카드들 -->
+      <div id="card-list"></div>
+    </section>
+
+    <!-- 화면 3: 반장이 누가 이해했는지 보는 곳 -->
+    <section id="screen-board" class="screen">
+      <h2>확인판</h2>
+      <p class="hint">지시를 누르면 근로자별 응답이 보여요.</p>
+      <!-- 보낸 지시 목록. 누른 지시 아래에 근로자별 표가 펼쳐짐 (app.js가 채움) -->
+      <div id="board-list"></div>
+    </section>
+
+    <!-- 화면 4: 현장 용어 사전 관리 -->
+    <section id="screen-dict" class="screen">
+      <h2>현장 용어 사전 (<span id="dict-count">0</span>개)</h2>
+
+      <!-- 추가 / 수정 입력칸 -->
+      <div class="dict-form">
+        <div class="dict-inputs">
+          <label>현장 용어
+            <input type="text" id="dict-word" placeholder="예: 시마이">
+          </label>
+          <label>쉬운 한국어
+            <input type="text" id="dict-easy" placeholder="예: 마무리">
+          </label>
+        </div>
+        <button type="button" id="dict-save" class="main-btn">추가하기</button>
+        <button type="button" id="dict-cancel" class="small-btn" hidden>수정 취소</button>
+        <p id="dict-error" class="error"></p>
+      </div>
+
+      <input type="text" id="dict-search" class="dict-search" placeholder="🔍 용어 찾기">
+
+      <table class="dict-table">
+        <thead>
+          <tr><th>현장 용어</th><th>쉬운 한국어</th><th></th></tr>
+        </thead>
+        <tbody id="dict-body"></tbody>
+      </table>
+
+      <button type="button" id="dict-reset" class="small-btn">처음 사전(30개)으로 되돌리기</button>
+    </section>
+  </main>
+
+  <!-- 순서 중요: 데이터(data.js)를 먼저 읽고, 그다음 동작(app.js) -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
